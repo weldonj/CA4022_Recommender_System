@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BACKGROUND AND APPROACHES &#8212; CA4022 - Recommender System using Steam Video Game Data - John Weldon</title>
+    <title>DATA &#8212; CA4022 - Recommender System using Steam Video Game Data - John Weldon</title>
     
   <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -88,7 +88,7 @@
     <ul class="nav sidenav_l1">
  <li class="toctree-l1 current active">
   <a class="reference internal" href="#">
-   BACKGROUND AND APPROACHES
+   DATA
   </a>
  </li>
 </ul>
@@ -111,23 +111,6 @@
  <li class="toctree-l1">
   <a class="reference internal" href="FirstPage.html#data-exploration">
    Data Exploration
-  </a>
- </li>
-</ul>
-<p class="caption collapsible-parent">
- <span class="caption-text">
-  Concluding Section
- </span>
-</p>
-<ul class="nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="Summary_Conclusion.html">
-   Summary
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Summary_Conclusion.html#learning-outcomes">
-   Learning Outcomes
   </a>
  </li>
 </ul>
@@ -195,6 +178,25 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   DATA
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#system-types">
+   SYSTEM TYPES
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -202,11 +204,12 @@
         
               <div>
                 
-  <div class="section" id="background-and-approaches">
-<h1>BACKGROUND AND APPROACHES<a class="headerlink" href="#background-and-approaches" title="Permalink to this headline">¶</a></h1>
-<p><strong>Background -</strong></p>
-<p>One of the big reasons that music streaming giant Spotify has been and continues to be so successful is, is its “Discover Playlist” feature. Premium users receive a unique playlist each week that Spotify has generated just for them, based solely on their own music listening habits. Anecdotally, through our own use of Spotify we have seen that these can be astonishingly accurate.</p>
-<p>With this in mind, we are looking forward to attempting to create a music recommendation system that does some similar things. There are two main approaches that are used to build these systems.</p>
+  <div class="section" id="data">
+<h1>DATA<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h1>
+<p><strong>The Dataset -</strong></p>
+</div>
+<div class="section" id="system-types">
+<h1>SYSTEM TYPES<a class="headerlink" href="#system-types" title="Permalink to this headline">¶</a></h1>
 <p><strong>Collaborative Filtering -</strong></p>
 <p>This approach to recommendation requires a lot of data about users’ preferences. In our case, with the last.fm dataset, it will be the weighting each user gives to music artists. Collaborative filtering doesn’t know anything about the artists themselves, it doesn’t attempt to analyse them at all. Instead it makes the assumption that if User A tends to give similar weights to music artists that User B, they both enjoy similar music. Therefore, if User B likes an artist that User A has not been exposed to yet, it’s likely that User A will be happy to have that artist recommended to them. This user preference data can either be explicit (the user actually rates the artists) or implicit (analyse which artists the user listens to most often and for long periods of time). Due to Collaborative Filtering’s reliance on user data, it suffers from what’s known as the “Cold Start” problem. Brand new users have no preference data, and so the system will always struggle to know what to recommend.</p>
 <p><strong>Content-Based Filtering -</strong></p>
@@ -214,16 +217,6 @@
 <p><strong>Hybrid Model -</strong></p>
 <p>This is exactly as it sounds, with a blend of both collaborative filtering and content based filtering. These models can outperform either of the other two on their own, but it is difficult to find data that combines both user music ratings and actual data about the audio content itself.</p>
 <p><strong>Sections -</strong></p>
-<ul class="simple">
-<li><p>Data preparation</p></li>
-<li><p>Matrix Factorization Recommender System</p></li>
-<li><p>Spotify Integration</p></li>
-<li><p>TSNE Clustering</p></li>
-<li><p>Graph Analysis</p></li>
-<li><p>Concluding Section</p></li>
-</ul>
-<div class="toctree-wrapper compound">
-</div>
 <div class="toctree-wrapper compound">
 </div>
 </div>

@@ -1,10 +1,11 @@
-## BACKGROUND AND APPROACHES
+## DATA
 
-**Background -** 
+**The Dataset -** 
 
-One of the big reasons that music streaming giant Spotify has been and continues to be so successful is, is its “Discover Playlist” feature. Premium users receive a unique playlist each week that Spotify has generated just for them, based solely on their own music listening habits. Anecdotally, through our own use of Spotify we have seen that these can be astonishingly accurate.
 
-With this in mind, we are looking forward to attempting to create a music recommendation system that does some similar things. There are two main approaches that are used to build these systems.
+
+
+## SYSTEM TYPES
 
 **Collaborative Filtering -**
 
@@ -19,15 +20,3 @@ Unlike the previous approach, here the items being recommended are also closely 
 This is exactly as it sounds, with a blend of both collaborative filtering and content based filtering. These models can outperform either of the other two on their own, but it is difficult to find data that combines both user music ratings and actual data about the audio content itself.
 
 **Sections -**
-
- - Data preparation
-
- - Matrix Factorization Recommender System
-
- - Spotify Integration
-
- - TSNE Clustering
-
- - Graph Analysis
-
- - Concluding Section
