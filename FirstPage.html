@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>&lt;no title&gt; &#8212; CA4022 - Recommender System using Steam Video Game Data - John Weldon</title>
+    <title>Collaborative Filtering Recommender System &#8212; CA4022 - Recommender System using Steam Video Game Data - John Weldon</title>
     
   <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -92,6 +92,19 @@
   </a>
  </li>
 </ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Recommender System
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Collaborative Filtering Recommender System
+  </a>
+ </li>
+</ul>
+
 </nav> <!-- To handle the deprecated key -->
 
 <div class="navbar_extra_footer">
@@ -172,15 +185,6 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
-        <div class="tocsection onthispage pt-5 pb-3">
-            <i class="fas fa-list"></i> Contents
-        </div>
-        <nav id="bd-toc-nav">
-            <ul class="simple nav section-nav flex-column">
-</ul>
-
-        </nav>
-        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -188,7 +192,9 @@
         
               <div>
                 
-  <div class="cell docutils container">
+  <div class="section" id="collaborative-filtering-recommender-system">
+<h1>Collaborative Filtering Recommender System<a class="headerlink" href="#collaborative-filtering-recommender-system" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">DateType</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">,</span><span class="n">NumericType</span>
@@ -1129,6 +1135,7 @@ only showing top 20 rows
 |26762388|  Dragon Age Origins|   6.0|     0.038681578972502635|    934|
 +--------+--------------------+------+-------------------------+-------+
 </pre></div>
+</div>
 </div>
 </div>
 </div>
