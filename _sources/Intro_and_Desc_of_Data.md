@@ -1,9 +1,8 @@
-## DATA
+## DATASET AND BACKGROUND OF RECOMMENDER SYSTEMS
 
 **The Dataset -** 
 
-
-
+The dataset I am using here is a list of 200,000 Steam Video Game user behaviors, with user-id, game-title, behavior-name, value. The behaviors included are 'own' and 'play'. The behaviour I am interested in is 'play' as this is a numeric figure, representing how many hours the particular user has spent playing the games that they have purchased. I will be using this to create a derived rating system that the recommender system will then be able to use.
 
 ## SYSTEM TYPES
 
@@ -19,4 +18,6 @@ Unlike the previous approach, here the items being recommended are also closely 
 
 This is exactly as it sounds, with a blend of both collaborative filtering and content based filtering. These models can outperform either of the other two on their own, but it is difficult to find data that combines both user music ratings and actual data about the audio content itself.
 
-**Sections -**
+**My Approach -**
+
+For this recommender system, I will be using Collaborative Filtering inside Spark ML
