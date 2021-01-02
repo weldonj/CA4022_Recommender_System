@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Setup &#8212; CA4022 - Recommender System using Steam Video Game Data - John Weldon</title>
+    <title>&lt;no title&gt; &#8212; CA4022 - Recommender System using Steam Video Game Data - John Weldon</title>
     
   <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -92,29 +92,6 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
- <span class="caption-text">
-  Recommender System
- </span>
-</p>
-<ul class="current nav sidenav_l1">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Setup
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="#loading-data">
-   Loading Data
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="#data-exploration">
-   Data Exploration
-  </a>
- </li>
-</ul>
-
 </nav> <!-- To handle the deprecated key -->
 
 <div class="navbar_extra_footer">
@@ -199,68 +176,7 @@
             <i class="fas fa-list"></i> Contents
         </div>
         <nav id="bd-toc-nav">
-            <ul class="nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Setup
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#general-imports">
-     General Imports
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#google-drive-setup">
-     Google Drive Setup
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#define-utility-functions">
-     Define Utility Functions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#loading-data">
-   Loading Data
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#chekcing-for-missing-values">
-     Chekcing for Missing Values
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#reindexing-id-columns">
-     Reindexing ID Columns
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#data-exploration">
-   Data Exploration
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#analysis-of-tags">
-     Analysis of Tags
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#analysis-of-users-interaction-with-artists">
-     Analysis of Users’ Interaction with Artists
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#normalising-the-weights">
-     Normalising the Weights
-    </a>
-   </li>
-  </ul>
- </li>
+            <ul class="simple nav section-nav flex-column">
 </ul>
 
         </nav>
@@ -272,1284 +188,947 @@
         
               <div>
                 
-  <div class="section" id="setup">
-<h1>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="general-imports">
-<h2>General Imports<a class="headerlink" href="#general-imports" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
+  <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">DateType</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">,</span><span class="n">NumericType</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">DoubleType</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s1">&#39;recnn&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-
-<span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
-<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
-<span class="kn">import</span> <span class="nn">sklearn</span>
-<span class="kn">import</span> <span class="nn">sklearn.manifold</span>
-<span class="kn">import</span> <span class="nn">tensorflow.compat.v1</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="n">tf</span><span class="o">.</span><span class="n">disable_v2_behavior</span><span class="p">()</span>
-<span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;hdfs://localhost:9000/john/hadoop/input/steam-200k.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From /usr/local/lib/python3.6/dist-packages/tensorflow/python/compat/v2_compat.py:96: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
-Instructions for updating:
-non-resource variables are not supported in the long term
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Row(_c0=&#39;151603712&#39;, _c1=&#39;The Elder Scrolls V Skyrim&#39;, _c2=&#39;purchase&#39;, _c3=&#39;1.0&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;The Elder Scrolls V Skyrim&#39;, _c2=&#39;play&#39;, _c3=&#39;273.0&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;Fallout 4&#39;, _c2=&#39;purchase&#39;, _c3=&#39;1.0&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;Fallout 4&#39;, _c2=&#39;play&#39;, _c3=&#39;87.0&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;Spore&#39;, _c2=&#39;purchase&#39;, _c3=&#39;1.0&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;Spore&#39;, _c2=&#39;play&#39;, _c3=&#39;14.9&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;Fallout New Vegas&#39;, _c2=&#39;purchase&#39;, _c3=&#39;1.0&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;Fallout New Vegas&#39;, _c2=&#39;play&#39;, _c3=&#39;12.1&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;Left 4 Dead 2&#39;, _c2=&#39;purchase&#39;, _c3=&#39;1.0&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;Left 4 Dead 2&#39;, _c2=&#39;play&#39;, _c3=&#39;8.9&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;HuniePop&#39;, _c2=&#39;purchase&#39;, _c3=&#39;1.0&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;HuniePop&#39;, _c2=&#39;play&#39;, _c3=&#39;8.5&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;Path of Exile&#39;, _c2=&#39;purchase&#39;, _c3=&#39;1.0&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;Path of Exile&#39;, _c2=&#39;play&#39;, _c3=&#39;8.1&#39;, _c4=&#39;0&#39;),
+ Row(_c0=&#39;151603712&#39;, _c1=&#39;Poly Bridge&#39;, _c2=&#39;purchase&#39;, _c3=&#39;1.0&#39;, _c4=&#39;0&#39;)]
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="google-drive-setup">
-<h2>Google Drive Setup<a class="headerlink" href="#google-drive-setup" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
-<span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;/content/drive&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mounted at /content/drive
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+-------------------+----------------+--------+------------------+------+
+|summary|                _c0|             _c1|     _c2|               _c3|   _c4|
++-------+-------------------+----------------+--------+------------------+------+
+|  count|             200000|          200000|  200000|            200000|200000|
+|   mean|  1.0365586594664E8|           140.0|    null|17.874383999999942|   0.0|
+| stddev|7.208073512913969E7|             0.0|    null|138.05695165086743|   0.0|
+|    min|          100012061|     007 Legends|    play|               0.1|     0|
+|    max|           99992274|theHunter Primal|purchase|             999.0|     0|
++-------+-------------------+----------------+--------+------------------+------+
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#os.chdir(&#39;/content/drive/My Drive/CA4015/Assignment 4/Assignment_4&#39;)   # Daniel</span>
-<span class="c1">#os.chdir(&#39;/content/drive/My Drive/CA4015/Assignment_4/&#39;) # John</span>
-<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;/content/drive/My Drive/College - 4th Year/CA4015_AdvancedML/Assignment_4&#39;</span><span class="p">)</span> <span class="c1"># Liam</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="define-utility-functions">
-<h2>Define Utility Functions<a class="headerlink" href="#define-utility-functions" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>%%capture
-# Add some convenience functions to Pandas DataFrame.
-pd.options.display.max_rows = 10
-pd.options.display.float_format = &#39;{:.3f}&#39;.format
-def mask(df, key, function):
-  &quot;&quot;&quot;Returns a filtered dataframe, by applying function to key&quot;&quot;&quot;
-  return df[function(df[key])]
-
-def flatten_cols(df):
-  df.columns = [&#39; &#39;.join(col).strip() for col in df.columns.values]
-  return df
-
-pd.DataFrame.mask = mask
-pd.DataFrame.flatten_cols = flatten_cols
-
-# Install Altair and activate its colab renderer.
-print(&quot;Installing Altair...&quot;)
-!pip install git+git://github.com/altair-viz/altair.git
-import altair as alt
-alt.data_transformers.enable(&#39;default&#39;, max_rows=None)
-alt.renderers.enable(&#39;colab&#39;)
-print(&quot;Done installing Altair.&quot;)
-
-# Install spreadsheets and import authentication module.
-USER_RATINGS = False
-!pip install --upgrade -q gspread
-from google.colab import auth
-import gspread
-from oauth2client.client import GoogleCredentials
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing Altair...
-Collecting git+git://github.com/altair-viz/altair.git
-  Cloning git://github.com/altair-viz/altair.git to /tmp/pip-req-build-rstd_acc
-  Running command git clone -q git://github.com/altair-viz/altair.git /tmp/pip-req-build-rstd_acc
-  Installing build dependencies ... ?25l?25hdone
-  Getting requirements to build wheel ... ?25l?25hdone
-    Preparing wheel metadata ... ?25l?25hdone
-Requirement already satisfied: jsonschema in /usr/local/lib/python3.6/dist-packages (from altair==4.2.0.dev0) (2.6.0)
-Requirement already satisfied: pandas&gt;=0.18 in /usr/local/lib/python3.6/dist-packages (from altair==4.2.0.dev0) (1.1.5)
-Requirement already satisfied: toolz in /usr/local/lib/python3.6/dist-packages (from altair==4.2.0.dev0) (0.11.1)
-Requirement already satisfied: numpy in /usr/local/lib/python3.6/dist-packages (from altair==4.2.0.dev0) (1.19.4)
-Requirement already satisfied: jinja2 in /usr/local/lib/python3.6/dist-packages (from altair==4.2.0.dev0) (2.11.2)
-Requirement already satisfied: entrypoints in /usr/local/lib/python3.6/dist-packages (from altair==4.2.0.dev0) (0.3)
-Requirement already satisfied: pytz&gt;=2017.2 in /usr/local/lib/python3.6/dist-packages (from pandas&gt;=0.18-&gt;altair==4.2.0.dev0) (2018.9)
-Requirement already satisfied: python-dateutil&gt;=2.7.3 in /usr/local/lib/python3.6/dist-packages (from pandas&gt;=0.18-&gt;altair==4.2.0.dev0) (2.8.1)
-Requirement already satisfied: MarkupSafe&gt;=0.23 in /usr/local/lib/python3.6/dist-packages (from jinja2-&gt;altair==4.2.0.dev0) (1.1.1)
-Requirement already satisfied: six&gt;=1.5 in /usr/local/lib/python3.6/dist-packages (from python-dateutil&gt;=2.7.3-&gt;pandas&gt;=0.18-&gt;altair==4.2.0.dev0) (1.15.0)
-Building wheels for collected packages: altair
-  Building wheel for altair (PEP 517) ... ?25l?25hdone
-  Created wheel for altair: filename=altair-4.2.0.dev0-cp36-none-any.whl size=730117 sha256=406421386bcd010e05be5843515e5d2a88c164d1134a70ebfe5280d3fdf3fd24
-  Stored in directory: /tmp/pip-ephem-wheel-cache-s0mr6d1f/wheels/01/fd/91/025b6149b3949af76e93b3b3ceca5bf12cbdebc98fa46f9ec6
-Successfully built altair
-Installing collected packages: altair
-  Found existing installation: altair 4.1.0
-    Uninstalling altair-4.1.0:
-      Successfully uninstalled altair-4.1.0
-Successfully installed altair-4.2.0.dev0
-Done installing Altair.
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200000
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="loading-data">
-<h1>Loading Data<a class="headerlink" href="#loading-data" title="Permalink to this headline">¶</a></h1>
-<p>Here, we read in each DataFrame and inspect each to familiarise ourselves with the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">artists</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/last.fm/artists.dat&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">artists_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="s1">&#39;pictureURL&#39;</span><span class="p">]</span>
-<span class="n">artists</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="s1">&#39;_c0&#39;</span><span class="p">,</span> <span class="s1">&#39;_c1&#39;</span><span class="p">,</span> <span class="s1">&#39;_c2&#39;</span><span class="p">,</span> <span class="s1">&#39;_c3&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">drop</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>name</th>
-      <th>url</th>
-      <th>pictureURL</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>MALICE MIZER</td>
-      <td>http://www.last.fm/music/MALICE+MIZER</td>
-      <td>http://userserve-ak.last.fm/serve/252/10808.jpg</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>Diary of Dreams</td>
-      <td>http://www.last.fm/music/Diary+of+Dreams</td>
-      <td>http://userserve-ak.last.fm/serve/252/3052066.jpg</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>Carpathian Forest</td>
-      <td>http://www.last.fm/music/Carpathian+Forest</td>
-      <td>http://userserve-ak.last.fm/serve/252/40222717...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>Moi dix Mois</td>
-      <td>http://www.last.fm/music/Moi+dix+Mois</td>
-      <td>http://userserve-ak.last.fm/serve/252/54697835...</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>Bella Morte</td>
-      <td>http://www.last.fm/music/Bella+Morte</td>
-      <td>http://userserve-ak.last.fm/serve/252/14789013...</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200000
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u_t_artists</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/last.fm/user_taggedartists.dat&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">u_t_artists_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="s1">&#39;artistID&#39;</span><span class="p">,</span> <span class="s1">&#39;tagID&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">]</span>
-<span class="n">u_t_artists</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;_c2&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;purchase&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>userID</th>
-      <th>artistID</th>
-      <th>tagID</th>
-      <th>day</th>
-      <th>month</th>
-      <th>year</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2</td>
-      <td>52</td>
-      <td>13</td>
-      <td>1</td>
-      <td>4</td>
-      <td>2009</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>52</td>
-      <td>15</td>
-      <td>1</td>
-      <td>4</td>
-      <td>2009</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2</td>
-      <td>52</td>
-      <td>18</td>
-      <td>1</td>
-      <td>4</td>
-      <td>2009</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2</td>
-      <td>52</td>
-      <td>21</td>
-      <td>1</td>
-      <td>4</td>
-      <td>2009</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2</td>
-      <td>52</td>
-      <td>41</td>
-      <td>1</td>
-      <td>4</td>
-      <td>2009</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Row(_c0=&#39;151603712&#39;, _c1=&#39;The Elder Scrolls V Skyrim&#39;, _c2=&#39;play&#39;, _c3=&#39;273.0&#39;)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uta_timestamps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/last.fm/user_taggedartists-timestamps.dat&quot;</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">uta_timestamps_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="s1">&#39;artistID&#39;</span><span class="p">,</span> <span class="s1">&#39;tagID&#39;</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">]</span>
-<span class="n">uta_timestamps</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>userID</th>
-      <th>artistID</th>
-      <th>tagID</th>
-      <th>timestamp</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2</td>
-      <td>52</td>
-      <td>13</td>
-      <td>1238536800000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>52</td>
-      <td>15</td>
-      <td>1238536800000</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2</td>
-      <td>52</td>
-      <td>18</td>
-      <td>1238536800000</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2</td>
-      <td>52</td>
-      <td>21</td>
-      <td>1238536800000</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2</td>
-      <td>52</td>
-      <td>41</td>
-      <td>1238536800000</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>70489
+</pre></div>
 </div>
-<p>Above, we can see that this file holds the same information as the previous one but instead of a date, a <em>timestamp</em> is provided.</p>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user_artists</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/last.fm/user_artists.dat&quot;</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">user_artists_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="s1">&#39;artistID&#39;</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">]</span>
-<span class="n">user_artists</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">_c3</span><span class="p">)</span>
+
+<span class="n">max_value</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;_c3&quot;</span><span class="p">:</span> <span class="s2">&quot;max&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">collect</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">min_value</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;_c3&quot;</span><span class="p">:</span> <span class="s2">&quot;min&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">collect</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">max_value</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">min_value</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>userID</th>
-      <th>artistID</th>
-      <th>weight</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2</td>
-      <td>51</td>
-      <td>13883</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>52</td>
-      <td>11690</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2</td>
-      <td>53</td>
-      <td>11351</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2</td>
-      <td>54</td>
-      <td>10300</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2</td>
-      <td>55</td>
-      <td>8983</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>999.0
+0.1
+</pre></div>
 </div>
-<p>The <em>weight</em> column above is indicative of a listening count for each [user, artist] pair according to the documentation provided with the dataset.</p>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user_friends</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/last.fm/user_friends.dat&quot;</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">user_friends_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="s1">&#39;friendID&#39;</span><span class="p">]</span>
-<span class="n">user_friends</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>userID</th>
-      <th>friendID</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2</td>
-      <td>275</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>428</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2</td>
-      <td>515</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2</td>
-      <td>761</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2</td>
-      <td>831</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;_c0&#39;, &#39;string&#39;),
+ (&#39;_c1&#39;, &#39;string&#39;),
+ (&#39;_c2&#39;, &#39;string&#39;),
+ (&#39;_c3&#39;, &#39;string&#39;),
+ (&#39;rating&#39;, &#39;string&#39;)]
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user_friends</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">changedTypedf</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;rating_double&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">DoubleType</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">changedTypedf</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 25434 entries, 0 to 25433
-Data columns (total 2 columns):
- #   Column    Non-Null Count  Dtype
----  ------    --------------  -----
- 0   userID    25434 non-null  int64
- 1   friendID  25434 non-null  int64
-dtypes: int64(2)
-memory usage: 397.5 KB
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>root
+ |-- _c0: string (nullable = true)
+ |-- _c1: string (nullable = true)
+ |-- _c2: string (nullable = true)
+ |-- _c3: string (nullable = true)
+ |-- rating: string (nullable = true)
+ |-- rating_double: double (nullable = true)
 </pre></div>
 </div>
 </div>
 </div>
-<p>The above DataFrame provides the friend relationships between users on the platform. There are 25,434 rows which represent 12,717 bidirectional relationships whereby each friend relationship occurs twice in the DataFrame.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tags</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/last.fm/tags.dat&quot;</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;latin-1&#39;</span><span class="p">)</span>
-<span class="n">tags_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tagID&#39;</span><span class="p">,</span> <span class="s1">&#39;tagValue&#39;</span><span class="p">]</span>
-<span class="n">tags</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">col</span>
+
+<span class="n">scaled_result</span> <span class="o">=</span> <span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;rating_double&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="s2">&quot;rating_double&quot;</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="s2">&quot;rating_double&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="s2">&quot;rating_double&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hours_by_game</span> <span class="o">=</span> <span class="n">changedTypedf</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;_c0&quot;</span><span class="p">,</span> <span class="s2">&quot;_c1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;rating_double&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hours_by_gamer</span> <span class="o">=</span> <span class="n">changedTypedf</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;_c0&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;rating_double&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hours_by_gamer</span> <span class="o">=</span> <span class="n">hours_by_gamer</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">&quot;sum(rating_double)&quot;</span><span class="p">,</span> <span class="s2">&quot;gamer_total_hours_played&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hours_by_gamer</span> <span class="o">=</span> <span class="n">hours_by_gamer</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">&quot;_c0&quot;</span><span class="p">,</span> <span class="s2">&quot;gamer&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hours_by_gamer_by_game</span> <span class="o">=</span> <span class="n">hours_by_game</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hours_by_gamer</span>\
+                     <span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">),</span><span class="n">hours_by_game</span><span class="p">[</span><span class="s1">&#39;_c0&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">hours_by_gamer</span><span class="p">[</span><span class="s1">&#39;gamer&#39;</span><span class="p">],</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hours_by_gamer_by_game</span> <span class="o">=</span> <span class="n">hours_by_gamer_by_game</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;perc_of_gamer_total_hours&quot;</span><span class="p">,</span> 
+                                                         <span class="n">hours_by_gamer_by_game</span><span class="p">[</span><span class="s2">&quot;sum(rating_double)&quot;</span><span class="p">]</span><span class="o">/</span> <span class="n">hours_by_gamer_by_game</span><span class="p">[</span><span class="s2">&quot;gamer_total_hours_played&quot;</span><span class="p">]</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hours_by_gamer_by_game</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>tagID</th>
-      <th>tagValue</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>metal</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>alternative metal</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>goth rock</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>black metal</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>death metal</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+--------------------+------------------+---------+------------------------+-------------------------+
+|      _c0|                 _c1|sum(rating_double)|    gamer|gamer_total_hours_played|perc_of_gamer_total_hours|
++---------+--------------------+------------------+---------+------------------------+-------------------------+
+| 26122540|Call of Duty Blac...|              22.0| 26122540|                   182.3|      0.12068019747668678|
+|126340495|     Team Fortress 2|              16.1|126340495|      2770.8999999999996|     0.005810386517016133|
+| 97298878|            Mafia II|              15.9| 97298878|                   220.6|      0.07207615593834996|
+| 11373749|   Fate of the World|               2.3| 11373749|      3943.2000000000016|     5.832826131061064E-4|
+| 46759859|       Day of Defeat|               5.8| 46759859|                   812.8|     0.007135826771653544|
+| 32592631|  Duke Nukem Forever|               8.8| 32592631|                   286.7|     0.030694105336588774|
+| 57103808|   Company of Heroes|              89.0| 57103808|      1276.7000000000005|      0.06971097360382232|
+| 94088853|       ORION Prelude|              13.5| 94088853|       920.4000000000001|      0.01466753585397653|
+|  9823354|Europa Universali...|               2.1|  9823354|       2738.899999999997|     7.667311694475893E-4|
+|249165768|Battlefield Bad C...|               4.0|249165768|                   695.9|     0.005747952291995977|
++---------+--------------------+------------------+---------+------------------------+-------------------------+
+only showing top 10 rows
+</pre></div>
 </div>
-<p>The above DataFrame is a unique list of the tags assigned to artists by users. The next step is to check for missing values in all of the DataFrames…</p>
-<div class="section" id="chekcing-for-missing-values">
-<h2>Chekcing for Missing Values<a class="headerlink" href="#chekcing-for-missing-values" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;user_artists: &quot;</span><span class="p">,</span> <span class="n">user_artists</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;user_friends: &quot;</span><span class="p">,</span> <span class="n">user_friends</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;u_t_artists: &quot;</span><span class="p">,</span> <span class="n">u_t_artists</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;uta_timestamps: &quot;</span><span class="p">,</span><span class="n">uta_timestamps</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;artists: &quot;</span><span class="p">,</span> <span class="n">artists</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;tags: &quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import some needed pyspark.sql functions</span>
+
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">pyspark.sql.functions</span> <span class="k">as</span> <span class="nn">func</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.window</span> <span class="kn">import</span> <span class="n">Window</span>
+
+<span class="c1"># For each store, we can rank all items from most popular to least popular based on sales in US dollars </span>
+
+<span class="n">ranked</span> <span class="o">=</span>  <span class="n">hours_by_gamer_by_game</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;rank&quot;</span><span class="p">,</span> <span class="n">dense_rank</span><span class="p">()</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">Window</span><span class="o">.</span><span class="n">partitionBy</span><span class="p">(</span><span class="s2">&quot;gamer&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="s2">&quot;perc_of_gamer_total_hours&quot;</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ranked</span> <span class="o">=</span> <span class="n">ranked</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;gamer_total_hours_played&quot;</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ranked</span><span class="p">[</span><span class="s2">&quot;gamer_total_hours_played&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">ranked</span> <span class="o">=</span> <span class="n">ranked</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;perc_of_gamer_total_hours&quot;</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ranked</span><span class="p">[</span><span class="s2">&quot;perc_of_gamer_total_hours&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ranked</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>user_artists:  False
-user_friends:  False
-u_t_artists:  False
-uta_timestamps:  False
-artists:  True
-tags:  False
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+--------------------+------------------+---------+------------------------+-------------------------+----+
+|      _c0|                 _c1|sum(rating_double)|    gamer|gamer_total_hours_played|perc_of_gamer_total_hours|rank|
++---------+--------------------+------------------+---------+------------------------+-------------------------+----+
+|108750879|       Borderlands 2|             758.0|108750879|                  1807.5|                     0.42|   1|
+|108750879|The Elder Scrolls...|             511.0|108750879|                  1807.5|                     0.28|   2|
+|108750879|Call of Duty Mode...|             149.0|108750879|                  1807.5|                     0.08|   3|
+|108750879|       Saints Row IV|             117.0|108750879|                  1807.5|                     0.06|   4|
+|108750879|           Fallout 4|              77.0|108750879|                  1807.5|                     0.04|   5|
+|108750879|   Fallout New Vegas|              71.0|108750879|                  1807.5|                     0.04|   6|
+|108750879|Saints Row The Third|              33.0|108750879|                  1807.5|                     0.02|   7|
+|108750879|    Metro Last Light|              26.0|108750879|                  1807.5|                     0.01|   8|
+|108750879|              Dota 2|              25.0|108750879|                  1807.5|                     0.01|   9|
+|108750879|          F.E.A.R. 3|              17.2|108750879|                  1807.5|                     0.01|  10|
++---------+--------------------+------------------+---------+------------------------+-------------------------+----+
+only showing top 10 rows
 </pre></div>
 </div>
 </div>
 </div>
-<p>The <em>artists</em> table does contain null values, so the next step is to investigate these.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">artists</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_ranked</span> <span class="o">=</span> <span class="n">ranked</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;sum(rating_double)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_ranked</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>id            False
-name          False
-url           False
-pictureURL     True
-dtype: bool
-</pre></div>
-</div>
-</div>
-</div>
-<p>The only column which contains null values is the <em>pictureURL</em> column. This doesn’t affect our work so there is no need to remove or clean any instances.</p>
-</div>
-<div class="section" id="reindexing-id-columns">
-<h2>Reindexing ID Columns<a class="headerlink" href="#reindexing-id-columns" title="Permalink to this headline">¶</a></h2>
-<p>All of the user, artists and tag IDs do not start at zero. For the sake of efficiency later on, we will change the IDs in each DataFrame.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user_artists</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_artists</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">user_artists</span><span class="p">[</span><span class="s2">&quot;artistID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_artists</span><span class="p">[</span><span class="s2">&quot;artistID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-
-<span class="n">artists</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">artists</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-
-<span class="n">u_t_artists</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_t_artists</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">u_t_artists</span><span class="p">[</span><span class="s2">&quot;artistID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_t_artists</span><span class="p">[</span><span class="s2">&quot;artistID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">u_t_artists</span><span class="p">[</span><span class="s2">&quot;tagID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_t_artists</span><span class="p">[</span><span class="s2">&quot;tagID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-
-<span class="n">uta_timestamps</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uta_timestamps</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">uta_timestamps</span><span class="p">[</span><span class="s2">&quot;artistID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uta_timestamps</span><span class="p">[</span><span class="s2">&quot;artistID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">uta_timestamps</span><span class="p">[</span><span class="s2">&quot;tagID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uta_timestamps</span><span class="p">[</span><span class="s2">&quot;tagID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-
-<span class="n">tags</span><span class="p">[</span><span class="s2">&quot;tagID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tags</span><span class="p">[</span><span class="s2">&quot;tagID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-
-<span class="n">user_friends</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_friends</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">user_friends</span><span class="p">[</span><span class="s2">&quot;friendID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_friends</span><span class="p">[</span><span class="s2">&quot;friendID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+--------------------+---------+------------------------+-------------------------+----+
+|      _c0|                 _c1|    gamer|gamer_total_hours_played|perc_of_gamer_total_hours|rank|
++---------+--------------------+---------+------------------------+-------------------------+----+
+|108750879|       Borderlands 2|108750879|                  1807.5|                     0.42|   1|
+|108750879|The Elder Scrolls...|108750879|                  1807.5|                     0.28|   2|
+|108750879|Call of Duty Mode...|108750879|                  1807.5|                     0.08|   3|
+|108750879|       Saints Row IV|108750879|                  1807.5|                     0.06|   4|
+|108750879|           Fallout 4|108750879|                  1807.5|                     0.04|   5|
+|108750879|   Fallout New Vegas|108750879|                  1807.5|                     0.04|   6|
+|108750879|Saints Row The Third|108750879|                  1807.5|                     0.02|   7|
+|108750879|    Metro Last Light|108750879|                  1807.5|                     0.01|   8|
+|108750879|              Dota 2|108750879|                  1807.5|                     0.01|   9|
+|108750879|          F.E.A.R. 3|108750879|                  1807.5|                     0.01|  10|
+|108750879|Call of Duty Mode...|108750879|                  1807.5|                     0.01|  11|
+|108750879|            Warframe|108750879|                  1807.5|                      0.0|  12|
+|108750879|     Team Fortress 2|108750879|                  1807.5|                      0.0|  13|
+|108750879|Blacklight Tango ...|108750879|                  1807.5|                      0.0|  14|
+|108750879|             Nosgoth|108750879|                  1807.5|                      0.0|  14|
+|109278470|Counter-Strike Gl...|109278470|                    76.0|                     0.99|   1|
+|109278470|Half-Life 2 Episo...|109278470|                    76.0|                     0.01|   2|
+|109278470|     Team Fortress 2|109278470|                    76.0|                     0.01|   2|
+|110840027|     Team Fortress 2|110840027|                     0.2|                      1.0|   1|
+|121154091|     Team Fortress 2|121154091|                     3.0|                      1.0|   1|
++---------+--------------------+---------+------------------------+-------------------------+----+
+only showing top 20 rows
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unique userID list: &#39;</span><span class="p">,</span> <span class="n">user_artists</span><span class="o">.</span><span class="n">userID</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unique artistID list: &#39;</span><span class="p">,</span> <span class="n">user_artists</span><span class="o">.</span><span class="n">artistID</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.ml.feature</span> <span class="kn">import</span> <span class="n">QuantileDiscretizer</span>
+<span class="kn">from</span> <span class="nn">pyspark.ml.feature</span> <span class="kn">import</span> <span class="n">Bucketizer</span>
+
+<span class="c1"># use QuantileDiscretizer to place all of the ranked items into ten ratings buckets, </span>
+<span class="c1"># equally distributed based on their position in the ranking </span>
+
+<span class="n">game_rated</span> <span class="o">=</span> <span class="n">QuantileDiscretizer</span><span class="p">(</span><span class="n">numBuckets</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inputCol</span><span class="o">=</span><span class="s2">&quot;perc_of_gamer_total_hours&quot;</span><span class="p">,</span><span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;rating&quot;</span><span class="p">)</span>\
+<span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">hours_by_gamer_by_game</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">hours_by_gamer_by_game</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">game_rated</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;gamer&quot;</span><span class="p">,</span><span class="s2">&quot;_c1&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">,</span><span class="s2">&quot;perc_of_gamer_total_hours&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">&quot;_c1&quot;</span><span class="p">,</span> <span class="s2">&quot;game&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Unique userID list [&#39;0&#39; &#39;1&#39; &#39;2&#39; ... &#39;2095&#39; &#39;2097&#39; &#39;2098&#39;]
-Unique artistID list [&#39;50&#39; &#39;51&#39; &#39;52&#39; ... &#39;18727&#39; &#39;18728&#39; &#39;18729&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+--------------------+------+-------------------------+
+|    gamer|                game|rating|perc_of_gamer_total_hours|
++---------+--------------------+------+-------------------------+
+| 26122540|Call of Duty Blac...|   7.0|      0.12068019747668678|
+|126340495|     Team Fortress 2|   4.0|     0.005810386517016133|
+| 97298878|            Mafia II|   7.0|      0.07207615593834996|
+| 11373749|   Fate of the World|   1.0|     5.832826131061064E-4|
+| 46759859|       Day of Defeat|   4.0|     0.007135826771653544|
+| 32592631|  Duke Nukem Forever|   6.0|     0.030694105336588774|
+| 57103808|   Company of Heroes|   7.0|      0.06971097360382232|
+| 94088853|       ORION Prelude|   5.0|      0.01466753585397653|
+|  9823354|Europa Universali...|   1.0|     7.667311694475893E-4|
+|249165768|Battlefield Bad C...|   4.0|     0.005747952291995977|
+|130280718|              Dota 2|   7.0|      0.05423353624792473|
+| 25096601|              Dota 2|   8.0|      0.25513254933227025|
+| 25096601|Chivalry Medieval...|   2.0|     0.001195933824995...|
+| 82235763|           Homefront|   9.0|                      1.0|
+| 92914917|     Sniper Elite V2|   1.0|     4.014362496933477E-4|
+| 92914917|           Sanctum 2|   1.0|     3.345302080777897...|
+| 72842694|   Talisman Prologue|   3.0|     0.002284968173657...|
+| 72842694|             Strider|   2.0|     0.001958544148849358|
+|  4834220|           Fallout 4|   5.0|     0.009562445667922338|
+| 65958466|       Stronghold HD|   3.0|     0.004033699259637477|
++---------+--------------------+------+-------------------------+
+only showing top 20 rows
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user_artists</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">object</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;gamer&quot;</span><span class="p">,</span> <span class="n">ratings</span><span class="p">[</span><span class="s2">&quot;gamer&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">IntegerType</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>userID</th>
-      <th>artistID</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>92834</td>
-      <td>92834</td>
-    </tr>
-    <tr>
-      <th>unique</th>
-      <td>1892</td>
-      <td>17632</td>
-    </tr>
-    <tr>
-      <th>top</th>
-      <td>459</td>
-      <td>88</td>
-    </tr>
-    <tr>
-      <th>freq</th>
-      <td>50</td>
-      <td>611</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+--------------------+------+-------------------------+
+|    gamer|                game|rating|perc_of_gamer_total_hours|
++---------+--------------------+------+-------------------------+
+| 26122540|Call of Duty Blac...|   7.0|      0.12068019747668678|
+|126340495|     Team Fortress 2|   4.0|     0.005810386517016133|
+| 97298878|            Mafia II|   7.0|      0.07207615593834996|
+| 11373749|   Fate of the World|   1.0|     5.832826131061064E-4|
+| 46759859|       Day of Defeat|   4.0|     0.007135826771653544|
+| 32592631|  Duke Nukem Forever|   6.0|     0.030694105336588774|
+| 57103808|   Company of Heroes|   7.0|      0.06971097360382232|
+| 94088853|       ORION Prelude|   5.0|      0.01466753585397653|
+|  9823354|Europa Universali...|   1.0|     7.667311694475893E-4|
+|249165768|Battlefield Bad C...|   4.0|     0.005747952291995977|
++---------+--------------------+------+-------------------------+
+only showing top 10 rows
+</pre></div>
 </div>
-<p>We have now changed the IDs to start from 0 but the number of unique userIDs in the <em>user_artists</em> table the doesn’t match the last userID and artistID. So for both cases, we cannot assume that the index of the table equals the ID.</p>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tags</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">object</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.window</span> <span class="kn">import</span> <span class="n">Window</span>
+<span class="n">ratings</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;game_id&quot;</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">dense_rank</span><span class="p">()</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">Window</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">ratings</span><span class="o">.</span><span class="n">game</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">randomSplit</span><span class="p">([</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">0.2</span><span class="p">],</span> <span class="n">seed</span> <span class="o">=</span> <span class="mi">36</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.ml.recommendation</span> <span class="kn">import</span> <span class="n">ALS</span>
+
+<span class="c1"># create our model</span>
+
+<span class="n">als</span> <span class="o">=</span> <span class="n">ALS</span><span class="p">(</span><span class="n">maxIter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">regParam</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">userCol</span><span class="o">=</span><span class="s2">&quot;gamer&quot;</span><span class="p">,</span> <span class="n">itemCol</span><span class="o">=</span><span class="s2">&quot;game_id&quot;</span><span class="p">,</span> <span class="n">ratingCol</span><span class="o">=</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span>
+          <span class="n">coldStartStrategy</span><span class="o">=</span><span class="s2">&quot;drop&quot;</span><span class="p">,</span> <span class="n">nonnegative</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">als</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">training</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>tagID</th>
-      <th>tagValue</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>11946</td>
-      <td>11946</td>
-    </tr>
-    <tr>
-      <th>unique</th>
-      <td>11946</td>
-      <td>11946</td>
-    </tr>
-    <tr>
-      <th>top</th>
-      <td>10200</td>
-      <td>liam gallagher</td>
-    </tr>
-    <tr>
-      <th>freq</th>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+--------------------+------+-------------------------+-------+----------+
+|    gamer|                game|rating|perc_of_gamer_total_hours|game_id|prediction|
++---------+--------------------+------+-------------------------+-------+----------+
+|298890193|                  C9|   5.0|     0.008174386920980927|    463| 10.399544|
+|141773234|                  C9|   0.0|     5.068166844052507E-5|    463| 2.2671351|
+| 65229865|Europa Universali...|   8.0|       0.5202312138728324|   1088|  9.895632|
+| 58217836|Europa Universali...|   4.0|      0.00728108833109791|   1088| 3.2841067|
+| 75368808|Europa Universali...|   8.0|      0.22816053345276305|   1088|   6.60545|
+| 65958466|Europa Universali...|   4.0|     0.007658922644881285|   1088| 2.6655507|
+| 42695514|Football Manager ...|   5.0|     0.008433107756376887|   1238|  6.052161|
+| 40080833|Football Manager ...|   6.0|     0.037704231252618355|   1238| 5.8518333|
+|113260911|Football Manager ...|   7.0|      0.06747638326585695|   1238| 7.8499417|
+| 84925352|Football Manager ...|   7.0|      0.13810198300283288|   1238| 14.121485|
+| 81054122|Football Manager ...|   5.0|     0.015455950540958269|   1238| 12.906618|
+| 10302000|Football Manager ...|   7.0|      0.06990411382616765|   1238| 4.2817283|
+|131785763|Infinity Wars - A...|   1.0|     4.404316229905308E-4|   1580| 1.1740297|
+|120514307|Infinity Wars - A...|   8.0|       0.2422480620155039|   1580|  9.999819|
+| 14544587|Infinity Wars - A...|   0.0|     2.212090302441902...|   1580| 5.1255918|
+|131876863|Infinity Wars - A...|   0.0|     3.132832080200502E-4|   1580| 14.497024|
+| 69953893|Infinity Wars - A...|   0.0|     2.871912693854107E-4|   1580| 2.9354901|
+| 30519870|               Mafia|   1.0|       7.4162448005675E-4|   1829| 3.8883429|
+| 58345543|Steel Storm Burni...|   3.0|     0.003200232744199...|   2866|0.63559055|
+| 98561727|         Audiosurf 2|   6.0|     0.023094688221709007|    243|  16.11771|
++---------+--------------------+------+-------------------------+-------+----------+
+only showing top 20 rows
+</pre></div>
 </div>
-<p>Now, we write the cleaned DataFrames to our shared Google Drive folder.</p>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Don&#39;t run this cell again</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">user_artists.to_csv(&#39;data_clean/user_artists.csv&#39;)</span>
-<span class="sd">user_friends.to_csv(&#39;data_clean/user_friends.csv&#39;)</span>
-<span class="sd">u_t_artists.to_csv(&#39;data_clean/u_t_artists.csv&#39;)</span>
-<span class="sd">uta_timestamps.to_csv(&#39;data_clean/uta_timestamps.csv&#39;)</span>
-<span class="sd">artists.to_csv(&#39;data_clean/artists.csv&#39;)</span>
-<span class="sd">tags.to_csv(&#39;data_clean/tags.csv&#39;)</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.ml.evaluation</span> <span class="kn">import</span> <span class="n">RegressionEvaluator</span>
+<span class="kn">from</span> <span class="nn">pyspark.ml</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">pyspark.ml.classification</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">pyspark.ml.evaluation</span> <span class="kn">import</span> <span class="n">BinaryClassificationEvaluator</span>
+<span class="kn">from</span> <span class="nn">pyspark.ml.feature</span> <span class="kn">import</span> <span class="n">HashingTF</span><span class="p">,</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="nn">pyspark.ml.tuning</span> <span class="kn">import</span> <span class="n">CrossValidator</span><span class="p">,</span> <span class="n">ParamGridBuilder</span><span class="p">,</span><span class="n">CrossValidatorModel</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">evaluator</span> <span class="o">=</span> <span class="n">RegressionEvaluator</span><span class="p">(</span><span class="n">metricName</span><span class="o">=</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span> <span class="n">labelCol</span><span class="o">=</span><span class="s1">&#39;rating&#39;</span><span class="p">)</span>
+<span class="n">rmse</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Root-mean-square error = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rmse</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;\nuser_artists.to_csv(&#39;data_clean/user_artists.csv&#39;)\nuser_friends.to_csv(&#39;data_clean/user_friends.csv&#39;)\nu_t_artists.to_csv(&#39;data_clean/u_t_artists.csv&#39;)\nuta_timestamps.to_csv(&#39;data_clean/uta_timestamps.csv&#39;)\nartists.to_csv(&#39;data_clean/artists.csv&#39;)\ntags.to_csv(&#39;data_clean/tags.csv&#39;)\n&quot;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Root-mean-square error = 3.1969283493060523
 </pre></div>
 </div>
 </div>
 </div>
-<p>It may also be conveninet to merge the <em>user_artist_tag</em> dataframe to show the actual tags assigned to artists using a left join. We then also save this our Drive.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">merged_uat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">u_t_artists</span><span class="p">,</span> <span class="n">tags</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;tagID&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">merged_uat.to_csv(&#39;data_clean/merged_user_artist_tags.csv&#39;)</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">als</span><span class="o">.</span><span class="n">getUserCol</span><span class="p">())</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">userSubsetRecs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">recommendForUserSubset</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">userSubsetRecs</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;\nmerged_uat.to_csv(&#39;data_clean/merged_user_artist_tags.csv&#39;)\n&quot;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|gamer    |recommendations                                                                                                                                                                             |
++---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|95059220 |[[2301, 38.80517], [3406, 35.07122], [3404, 28.653816], [1113, 28.427078], [1292, 27.79138], [84, 27.426414], [650, 24.354202], [2634, 23.63623], [1127, 23.5766], [1999, 23.529064]]       |
+|208061820|[[2074, 38.151134], [2634, 33.317677], [1999, 32.32135], [1184, 31.101074], [1790, 30.502562], [2521, 29.361324], [2513, 28.49202], [3007, 26.759018], [3021, 26.710382], [3448, 25.876188]]|
+|75689918 |[[2074, 43.330486], [2521, 36.432007], [3007, 34.123558], [2513, 33.400932], [2353, 30.927078], [2377, 30.892965], [2501, 30.651756], [84, 29.995317], [1816, 29.40997], [2772, 28.47326]]  |
++---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="data-exploration">
-<h1>Data Exploration<a class="headerlink" href="#data-exploration" title="Permalink to this headline">¶</a></h1>
-<p>To become more familiar with the data which we’ll be working with, we are going to do some simple data exploration by firstly examining the most common tags.</p>
-<div class="section" id="analysis-of-tags">
-<h2>Analysis of Tags<a class="headerlink" href="#analysis-of-tags" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tag_counts</span> <span class="o">=</span> <span class="n">merged_uat</span><span class="p">[[</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="s1">&#39;tagValue&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;tagValue&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-<span class="n">top_tags</span> <span class="o">=</span> <span class="n">tag_counts</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;userID&#39;</span><span class="p">:</span><span class="s1">&#39;count&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">top_tags</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hours_by_gamer_by_game</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>tagValue</th>
-      <th>count</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>7473</th>
-      <td>rock</td>
-      <td>7503</td>
-    </tr>
-    <tr>
-      <th>6802</th>
-      <td>pop</td>
-      <td>5418</td>
-    </tr>
-    <tr>
-      <th>441</th>
-      <td>alternative</td>
-      <td>5251</td>
-    </tr>
-    <tr>
-      <th>2709</th>
-      <td>electronic</td>
-      <td>4672</td>
-    </tr>
-    <tr>
-      <th>4393</th>
-      <td>indie</td>
-      <td>4458</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>5608</th>
-      <td>metal</td>
-      <td>1729</td>
-    </tr>
-    <tr>
-      <th>497</th>
-      <td>ambient</td>
-      <td>1699</td>
-    </tr>
-    <tr>
-      <th>207</th>
-      <td>90s</td>
-      <td>1615</td>
-    </tr>
-    <tr>
-      <th>6160</th>
-      <td>new wave</td>
-      <td>1595</td>
-    </tr>
-    <tr>
-      <th>7782</th>
-      <td>seen live</td>
-      <td>1439</td>
-    </tr>
-  </tbody>
-</table>
-<p>20 rows × 2 columns</p>
-</div></div></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+--------------------+------------------+--------+------------------------+-------------------------+
+|     _c0|                 _c1|sum(rating_double)|   gamer|gamer_total_hours_played|perc_of_gamer_total_hours|
++--------+--------------------+------------------+--------+------------------------+-------------------------+
+|26122540|Call of Duty Blac...|              22.0|26122540|                   182.3|      0.12068019747668678|
++--------+--------------------+------------------+--------+------------------------+-------------------------+
+only showing top 1 row
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;tagValue&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">top_tags</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">26122540</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/FirstPage_42_0.png" src="_images/FirstPage_42_0.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>26122540
+</pre></div>
 </div>
 </div>
-<p>From the plot above, we can see the top tags and most are not very surprising. ‘rock’ is the most widely assigned tag comfortably.</p>
 </div>
-<div class="section" id="analysis-of-users-interaction-with-artists">
-<h2>Analysis of Users’ Interaction with Artists<a class="headerlink" href="#analysis-of-users-interaction-with-artists" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user_artists</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">game_list</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;game_id&#39;</span><span class="p">,</span> <span class="s1">&#39;game&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dropDuplicates</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">game_list</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>userID</th>
-      <th>artistID</th>
-      <th>weight</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>50</td>
-      <td>13883</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>0</td>
-      <td>51</td>
-      <td>11690</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0</td>
-      <td>52</td>
-      <td>11351</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>0</td>
-      <td>53</td>
-      <td>10300</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0</td>
-      <td>54</td>
-      <td>8983</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+--------------------+
+|game_id|                game|
++-------+--------------------+
+|      1|         007 Legends|
+|      2|           0RBITALIS|
+|      3|1... 2... 3... KI...|
+|      4|     10 Second Ninja|
+|      5|          10,000,000|
+|      6|   100% Orange Juice|
+|      7|           1000 Amps|
+|      8|12 Labours of Her...|
+|      9|12 Labours of Her...|
+|     10|12 Labours of Her...|
+|     11|                 140|
+|     12|             15 Days|
+|     13|        16bit Trader|
+|     14|1701 A.D. Sunken ...|
+|     15|18 Wheels of Stee...|
+|     16|1953 NATO vs Wars...|
+|     17|              1Quest|
+|     18|  3 Stars of Destiny|
+|     19|3089 -- Futuristi...|
+|     20|        3D Mini Golf|
++-------+--------------------+
+only showing top 20 rows
+</pre></div>
 </div>
-<p>The <em>weight</em> column in the above DataFrame is representative of the listening count of the user for that particular artist, according to the documentation. Let’s examine the distribution of this weight column.</p>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">displot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">user_artists</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">top_gamers</span> <span class="o">=</span> <span class="n">changedTypedf</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="n">changedTypedf</span><span class="p">[</span><span class="s1">&#39;_c0&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;_c3&#39;</span><span class="p">:</span><span class="s2">&quot;sum&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;sum(_c3)&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">top_gamers</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/FirstPage_47_0.png" src="_images/FirstPage_47_0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+------------------+
+|      _c0|          sum(_c3)|
++---------+------------------+
+| 73017395|           11754.0|
+| 10599862|11651.699999999999|
+|100630947|           10853.2|
+| 26762388|10470.100000000004|
+|153382649|            9640.0|
+| 43684632| 9546.299999999988|
+| 48798067| 9427.199999999997|
+| 52731290|            9417.6|
+| 42935819|            8172.9|
+| 14544587|8137.0999999999985|
+| 52567955|            7836.7|
+|130882834|            7801.9|
+| 57433226| 7741.499999999999|
+| 63615483| 7190.400000000001|
+| 47063596| 7161.000000000001|
+| 67694595| 7152.100000000001|
+| 17017968|            7108.5|
+| 50818751| 6929.899999999999|
+| 49893565|            6891.9|
+| 24721232|            6887.0|
++---------+------------------+
+</pre></div>
 </div>
 </div>
-<p>From above, we can clearly see that some outlier weights are heavily skewing this distribution. Let’s get a better look at this by plotting a box chart.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">user_artists</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">top20_gamer_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">_c0</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">top_gamers</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;_c0&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">top20_gamer_list</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f1b847f9da0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;73017395&#39;,
+ &#39;10599862&#39;,
+ &#39;100630947&#39;,
+ &#39;26762388&#39;,
+ &#39;153382649&#39;,
+ &#39;43684632&#39;,
+ &#39;48798067&#39;,
+ &#39;52731290&#39;,
+ &#39;42935819&#39;,
+ &#39;14544587&#39;,
+ &#39;52567955&#39;,
+ &#39;130882834&#39;,
+ &#39;57433226&#39;,
+ &#39;63615483&#39;,
+ &#39;47063596&#39;,
+ &#39;67694595&#39;,
+ &#39;17017968&#39;,
+ &#39;50818751&#39;,
+ &#39;49893565&#39;,
+ &#39;24721232&#39;]
 </pre></div>
 </div>
-<img alt="_images/FirstPage_49_1.png" src="_images/FirstPage_49_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user_artists</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gamer_recs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">recommendForAllUsers</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">rec_game_top20_gamers</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">gamer</span> <span class="ow">in</span> <span class="n">top20_gamer_list</span><span class="p">:</span>
+    <span class="n">rec_game</span> <span class="o">=</span> <span class="n">gamer_recs</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">gamer_recs</span><span class="o">.</span><span class="n">gamer</span> <span class="o">==</span> <span class="n">gamer</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;recommendations&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+    <span class="n">rec_game_top20_gamers</span><span class="p">[</span><span class="n">gamer</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">game_id</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rec_game</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;recommendations&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rec_game_top20_gamers</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    92834.000
-mean       745.244
-std       3751.322
-min          1.000
-25%        107.000
-50%        260.000
-75%        614.000
-max     352698.000
-Name: weight, dtype: float64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;73017395&#39;: [2521, 2074, 3007, 1184, 1127, 944, 871, 2151, 84, 2513],
+ &#39;10599862&#39;: [1999, 3404, 2797, 2301, 3406, 944, 916, 871, 3448, 650],
+ &#39;100630947&#39;: [966, 1440, 2797, 2513, 1705, 1788, 1092, 3118, 108, 2699],
+ &#39;26762388&#39;: [84, 2521, 108, 3404, 779, 1815, 1940, 1617, 2547, 3524],
+ &#39;153382649&#39;: [2074, 3404, 2634, 1999, 1113, 2521, 1184, 1790, 2301, 3406],
+ &#39;43684632&#39;: [2301, 3406, 84, 3404, 1292, 1127, 1113, 3054, 650, 2634],
+ &#39;48798067&#39;: [2151, 944, 650, 3406, 1127, 916, 2301, 1184, 871, 2634],
+ &#39;52731290&#39;: [2301, 3406, 650, 1292, 1127, 1113, 1999, 916, 2634, 608],
+ &#39;42935819&#39;: [2797, 3448, 2707, 2852, 2221, 966, 1440, 1492, 754, 2513],
+ &#39;14544587&#39;: [2797, 3448, 1999, 966, 2221, 2707, 2852, 1440, 3406, 3373],
+ &#39;52567955&#39;: [2699, 966, 668, 1857, 2377, 2797, 1440, 3391, 2828, 2353],
+ &#39;130882834&#39;: [1999, 2797, 3404, 2301, 3448, 3406, 966, 108, 84, 2513],
+ &#39;57433226&#39;: [779, 2828, 84, 3404, 2521, 1673, 108, 668, 2547, 1940],
+ &#39;63615483&#39;: [3007, 1999, 2074, 1609, 2134, 1806, 1087, 1869, 2491, 2297],
+ &#39;47063596&#39;: [3406, 2301, 1292, 1113, 2634, 1999, 608, 1672, 3054, 3384],
+ &#39;67694595&#39;: [3406, 2301, 3404, 1113, 1292, 84, 2634, 3524, 608, 1231],
+ &#39;17017968&#39;: [3007, 1999, 2074, 1609, 2134, 1869, 1806, 2297, 1087, 2772],
+ &#39;50818751&#39;: [3406, 2634, 1999, 2301, 650, 1790, 1113, 1292, 916, 3007],
+ &#39;49893565&#39;: [1184, 2074, 2521, 1424, 3007, 3021, 754, 944, 2634, 1816],
+ &#39;24721232&#39;: [1184, 2634, 3021, 2074, 2521, 754, 1492, 1424, 1790, 1816]}
 </pre></div>
 </div>
 </div>
 </div>
-<p>The box plot above underscores the heavy skew in this distribution along with the difference between the upper quartile and max value which can also be seen above.</p>
-</div>
-<div class="section" id="normalising-the-weights">
-<h2>Normalising the Weights<a class="headerlink" href="#normalising-the-weights" title="Permalink to this headline">¶</a></h2>
-<p>Firstly, let’s attempt to z-standardise the weights and see if that produces a nicer distribution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">std_user_artists</span> <span class="o">=</span> <span class="n">user_artists</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">std_user_artists</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-<span class="n">cols</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;userID&#39;</span><span class="p">)</span>
-<span class="n">cols</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;artistID&#39;</span><span class="p">)</span>
-<span class="c1">#user_artists[cols]</span>
-<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
-    <span class="n">col_zscore</span> <span class="o">=</span> <span class="n">col</span> <span class="o">+</span> <span class="s1">&#39;_zscore&#39;</span>
-    <span class="n">std_user_artists</span><span class="p">[</span><span class="n">col_zscore</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">std_user_artists</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">std_user_artists</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="o">/</span><span class="n">std_user_artists</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">ddof</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">std_user_artists</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">user1_recommend</span> <span class="o">=</span> <span class="n">game_list</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">game_list</span><span class="p">[</span><span class="s2">&quot;game_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">rec_game_top20_gamers</span><span class="p">[</span><span class="s1">&#39;10599862&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">user1_recommend</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>userID</th>
-      <th>artistID</th>
-      <th>weight</th>
-      <th>weight_zscore</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>50</td>
-      <td>13883</td>
-      <td>3.502</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>0</td>
-      <td>51</td>
-      <td>11690</td>
-      <td>2.918</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0</td>
-      <td>52</td>
-      <td>11351</td>
-      <td>2.827</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>0</td>
-      <td>53</td>
-      <td>10300</td>
-      <td>2.547</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0</td>
-      <td>54</td>
-      <td>8983</td>
-      <td>2.196</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>92829</th>
-      <td>2098</td>
-      <td>18725</td>
-      <td>337</td>
-      <td>-0.109</td>
-    </tr>
-    <tr>
-      <th>92830</th>
-      <td>2098</td>
-      <td>18726</td>
-      <td>297</td>
-      <td>-0.119</td>
-    </tr>
-    <tr>
-      <th>92831</th>
-      <td>2098</td>
-      <td>18727</td>
-      <td>281</td>
-      <td>-0.124</td>
-    </tr>
-    <tr>
-      <th>92832</th>
-      <td>2098</td>
-      <td>18728</td>
-      <td>280</td>
-      <td>-0.124</td>
-    </tr>
-    <tr>
-      <th>92833</th>
-      <td>2098</td>
-      <td>18729</td>
-      <td>263</td>
-      <td>-0.129</td>
-    </tr>
-  </tbody>
-</table>
-<p>92834 rows × 4 columns</p>
-</div></div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame[game_id: int, game: string]
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">std_user_artists</span><span class="o">.</span><span class="n">weight_zscore</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">user1_recommend</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count   92834.000
-mean        0.000
-std         1.000
-min        -0.198
-25%        -0.170
-50%        -0.129
-75%        -0.035
-max        93.821
-Name: weight_zscore, dtype: float64
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+--------------------+
+|game_id|                game|
++-------+--------------------+
+|    650|Construction-Simu...|
+|    871|         Diaper Dash|
+|    916|Don Bradman Crick...|
+|    944|Dragon&#39;s Prophet ...|
+|   1999|             NBA 2K9|
+|   2301|Professional Farm...|
+|   2797|Speedball 2 Tourn...|
+|   3404|               WRC 5|
+|   3406|WTFast Gamers Pri...|
+|   3448|Warrior Kings Bat...|
++-------+--------------------+
 </pre></div>
 </div>
 </div>
 </div>
-<p>Z-standardisation does not have the desired effect however. The highest z-score is 93.821 and the upper quartile is less than zero, so we will have to try another method.
-
-Another possibility would be to set the value of the outliers to a lower maximum value (i.e. put a cap on the weights) and then use a max-min scaler to scale the remaining weights into an easy-to-interpret 1-5 scale.
-
-After some experimentation, we think a reasonable cap for the weights is 1500. Therefore, we are going to set any weights above 1500 to this value.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user_artists</span><span class="p">[</span><span class="n">user_artists</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1500</span><span class="p">][</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1500</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ratings</span><span class="o">.</span><span class="n">gamer</span><span class="o">==</span><span class="s2">&quot;10599862&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.6/dist-packages/ipykernel_launcher.py:1: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  &quot;&quot;&quot;Entry point for launching an IPython kernel.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+--------------------+------+-------------------------+-------+
+|   gamer|                game|rating|perc_of_gamer_total_hours|game_id|
++--------+--------------------+------+-------------------------+-------+
+|10599862|   Crusader Kings II|   7.0|      0.05767398748680451|    701|
+|10599862|     Elite Dangerous|   7.0|      0.06402499206124429|   1033|
+|10599862|Football Manager ...|   7.0|      0.04986396834796639|   1236|
+|10599862|Mount &amp; Blade War...|   7.0|      0.07552545980414876|   1969|
+|10599862|       Path of Exile|   7.0|      0.06737214312074634|   2198|
+|10599862|Total War ROME II...|   7.0|      0.09105967369568391|   3266|
+|10599862|       DARK SOULS II|   6.0|     0.017593999158921018|    727|
+|10599862|The Elder Scrolls...|   6.0|     0.018108945475767486|   3068|
+|10599862|    Total War ATTILA|   6.0|      0.03587459340697066|   3263|
+|10599862|The Witcher 3 Wil...|   6.0|     0.017336526000497784|   3180|
++--------+--------------------+------+-------------------------+-------+
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">indexes</span> <span class="o">=</span> <span class="n">user_artists</span><span class="p">[</span><span class="n">user_artists</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1500</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the value of all of these weights to 1500</span>
-<span class="n">user_artists</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">indexes</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1500</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now, the distribution is not as heavily skewed as can be seen from the box plot below…</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">user_artists</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">user2_recommend</span> <span class="o">=</span> <span class="n">game_list</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">game_list</span><span class="p">[</span><span class="s2">&quot;game_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">rec_game_top20_gamers</span><span class="p">[</span><span class="s1">&#39;100630947&#39;</span><span class="p">]))</span>
+<span class="n">user2_recommend</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f1b848b0898&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+--------------------+
+|game_id|                game|
++-------+--------------------+
+|    108|Air Conflicts Pac...|
+|    966| Duke Nukem Forever |
+|   1092|        EverQuest II|
+|   1440|Hacker Evolution ...|
+|   1705|LEGO Batman The V...|
+|   1788|Lost Planet Extre...|
+|   2513|Rugby League Team...|
+|   2699|Silent Hill Homec...|
+|   2797|Speedball 2 Tourn...|
+|   3118|             The Maw|
++-------+--------------------+
 </pre></div>
 </div>
-<img alt="_images/FirstPage_61_1.png" src="_images/FirstPage_61_1.png" />
 </div>
 </div>
-<p>The code below scales the weights to an interval between 1-5 using an interpolation function from NumPy.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user_artists</span><span class="p">[</span><span class="s1">&#39;alt_weight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span>
-
-<span class="n">min_weight</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">user_artists</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
-<span class="n">max_weight</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">user_artists</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">user_artists</span><span class="p">)):</span>
-  <span class="n">user_artists</span><span class="o">.</span><span class="n">alt_weight</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">user_artists</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],[</span><span class="n">min_weight</span><span class="p">,</span><span class="n">max_weight</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ratings</span><span class="o">.</span><span class="n">gamer</span><span class="o">==</span><span class="s2">&quot;100630947&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.6/dist-packages/pandas/core/indexing.py:670: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  iloc._setitem_with_indexer(indexer, value)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+--------------------+------+-------------------------+-------+
+|    gamer|                game|rating|perc_of_gamer_total_hours|game_id|
++---------+--------------------+------+-------------------------+-------+
+|100630947|              Dota 2|   8.0|       0.9621125566653153|    923|
+|100630947|Counter-Strike Gl...|   6.0|      0.03731618324549441|    674|
+|100630947|        Aura Kingdom|   0.0|     1.842774481258983...|    247|
+|100630947|FreeStyle2 Street...|   0.0|     2.303468101573729...|   1264|
+|100630947|       Left 4 Dead 2|   0.0|     9.213872406294918E-6|   1734|
+|100630947|                Rust|   0.0|     3.132716618140272E-4|   2524|
++---------+--------------------+------+-------------------------+-------+
 </pre></div>
 </div>
 </div>
 </div>
-<p>The plot below shows the new distribution of weights…</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">displot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">user_artists</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;alt_weight&#39;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">user3_recommend</span> <span class="o">=</span> <span class="n">game_list</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">game_list</span><span class="p">[</span><span class="s2">&quot;game_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">rec_game_top20_gamers</span><span class="p">[</span><span class="s1">&#39;26762388&#39;</span><span class="p">]))</span>
+<span class="n">user3_recommend</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/FirstPage_65_0.png" src="_images/FirstPage_65_0.png" />
-</div>
-</div>
-<p>We can now write this DataFrame with normalised weights to our Drive and we are ready to begin builidng our recommender system.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># user_artists.to_csv(&#39;data_clean/new_user_artists.csv&#39;, index=False)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+--------------------+
+|game_id|                game|
++-------+--------------------+
+|     84|Afterfall InSanit...|
+|    108|Air Conflicts Pac...|
+|    779|            Daylight|
+|   1617|Jagged Alliance F...|
+|   1815|            MLB 2K12|
+|   1940| Missing Translation|
+|   2521|    Runestone Keeper|
+|   2547|STORM Frontline N...|
+|   3404|               WRC 5|
+|   3524|X-Plane 10 Global...|
++-------+--------------------+
 </pre></div>
 </div>
 </div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ratings</span><span class="o">.</span><span class="n">gamer</span><span class="o">==</span><span class="s2">&quot;26762388&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+--------------------+------+-------------------------+-------+
+|   gamer|                game|rating|perc_of_gamer_total_hours|game_id|
++--------+--------------------+------+-------------------------+-------+
+|26762388|Mount &amp; Blade War...|   7.0|      0.07879580901806092|   1969|
+|26762388|The Elder Scrolls...|   7.0|      0.10410597797537746|   3068|
+|26762388|Chivalry Medieval...|   6.0|     0.032473424322594806|    560|
+|26762388|           Far Cry 3|   6.0|      0.02234935673966819|   1171|
+|26762388|Counter-Strike So...|   6.0|      0.03018118260570576|    676|
+|26762388|Age of Empires II...|   6.0|     0.021680786238908886|     93|
+|26762388| Assassin&#39;s Creed II|   6.0|     0.017382833019741924|    226|
+|26762388|Assassin&#39;s Creed ...|   6.0|     0.017669363234353055|    228|
+|26762388|              Dota 2|   6.0|     0.022444866811205232|    923|
+|26762388|  Dragon Age Origins|   6.0|     0.038681578972502635|    934|
++--------+--------------------+------+-------------------------+-------+
+</pre></div>
 </div>
 </div>
 </div>
