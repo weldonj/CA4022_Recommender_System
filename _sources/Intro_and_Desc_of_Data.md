@@ -1,10 +1,10 @@
-## DATASET AND BACKGROUND OF RECOMMENDER SYSTEMS
+## DATASET AND TYPES OF RECOMMENDER SYSTEMS
 
-**The Dataset -** 
+### The Dataset
 
 The dataset I am using here is a list of 200,000 Steam Video Game user behaviors, with user-id, game-title, behavior-name, value. The behaviors included are 'own' and 'play'. The behaviour I am interested in is 'play' as this is a numeric figure, representing how many hours the particular user has spent playing the games that they have purchased. I will be using this to create a derived rating score that the recommender system will then be able to use.
 
-## SYSTEM TYPES
+### System Types
 
 **Collaborative Filtering -**
 
