@@ -20,4 +20,4 @@ This is exactly as it sounds, with a blend of both collaborative filtering and c
 
 **My Approach -**
 
-For this recommender system, I will be using Collaborative Filtering with Spark ML. The dataset doesn't containg any information about the video games themselves, just user preference, and so this is the only real choice that I have here.
+For this recommender system, I will be using Collaborative Filtering with Spark ML. The dataset doesn't contain any information about the video games themselves, just user preference, and so this is the only real choice that I have here.
